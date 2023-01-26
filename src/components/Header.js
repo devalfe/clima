@@ -1,5 +1,4 @@
-
-
+import PropTypes from "prop-types";
 const Header = ({titulo}) => {
   return(
     <nav>
@@ -10,4 +9,7 @@ const Header = ({titulo}) => {
   )
 }
 
+Header.prototype = {
+  titulo: PropTypes.string.isRequired
+}
 export default Header

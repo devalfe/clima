@@ -1,27 +1,27 @@
-
 import {Fragment} from "react";
 import Header from "./components/Header";
 import Formulario from "./components/Formulario";
 import {useState, useEffect} from "react";
 import Clima from "./components/Clima";
 import Error from "./components/Error";
+
 function App() {
 
   const [busqueda, setBusqueda] = useState({
-    ciudad: '',
-    pais: ''
+    ciudad: "",
+    pais: "",
   });
 
   const [consultar, setConsultar] = useState(false);
   const [resultado, setResultado] = useState({});
-  const [error, setError] = useState({error:false, mensaje: ""});
+  const [error, setError] = useState({error: false, mensaje: ""});
 
   const {ciudad, pais} = busqueda;
 
   useEffect(() => {
     const consultarApi = async () => {
 
-      if(consultar) {
+      if (consultar) {
         const appId = "5bfdc2fd6bf658957067fbbf52316466";
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${appId}`;
 
@@ -31,39 +31,35 @@ function App() {
         setResultado(resultado);
         setConsultar(false);
 
-        // Detecta si hubo resultados correctos en la consulta
-        console.log(resultado);
-
-        if(resultado.cod === 401) {
-          setError({ error: true, mensaje: resultado.message });
+        if (resultado.cod === "404") {
+          setError({error: true, mensaje: resultado.message});
         } else {
-          setError({ error: false, mensaje: ''});
+          setError({error: false, mensaje: ""});
         }
       }
 
-    }
+    };
     consultarApi().then();
   }, [ciudad, consultar, error, pais]);
-  console.log(error);
-  let componente;
 
-  if(error.error) {
-    componente = <Error mensaje={error.mensaje} />
+  let componente;
+  if (error.error) {
+    componente = <Error mensaje={error.mensaje} />;
   } else {
     componente = <Clima
       resultado={resultado}
-    />
+    />;
   }
   return (
-
-    <Fragment>
-      <Header titulo="Clima react app"
-      />
-      <div className="contenedor-form" >
+    <Fragment> <Header titulo="Clima react app"
+    />
+      <div className="contenedor-form">
         <div className="container">
           <div className="row">
             <div className="col m6 s12">
-              <Formulario busqueda={busqueda} setBusqueda={setBusqueda} setConsultar={setConsultar}/>
+              <Formulario busqueda={busqueda}
+                setBusqueda={setBusqueda}
+                setConsultar={setConsultar} />
             </div>
             <div className="col m6 s12">
               {componente}

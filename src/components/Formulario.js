@@ -1,5 +1,6 @@
-
 import {useState} from "react";
+import Error from "./Error";
+import PropTypes from "prop-types";
 
 const Formulario = ({busqueda, setBusqueda, setConsultar}) => {
 
@@ -11,32 +12,34 @@ const Formulario = ({busqueda, setBusqueda, setConsultar}) => {
     setBusqueda(
       {
         ...busqueda,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      },
     );
-  }
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (ciudad.trim() === '' || pais.trim() === '') {
+    if (ciudad.trim() === "" || pais.trim() === "") {
       setError(true);
       setConsultar(false);
     } else {
       setError(false);
       setConsultar(true);
     }
-    
-    
-  }
 
-  return(
+
+  };
+
+  return (
     <form onSubmit={handleSubmit}>
-
-      {error ? <p className="red darken-4 error">Todos los campos son obligatorios</p> : null}
+      {error ? <Error mensaje="Todos los campos son obligatorios" /> : null}
       <div className="input-field col s12">
-        <input type="text" name="ciudad" id="ciudad" value={ciudad} onChange={handleChange}/>
-        <label htmlFor="ciudad">Ciudad: </label>
+        <input type="text"
+          name="ciudad"
+          id="ciudad"
+          value={ciudad}
+          onChange={handleChange} /> <label htmlFor="ciudad">Ciudad: </label>
       </div>
       <div className="input-field col s12">
         <select className="browser-default"
@@ -53,8 +56,7 @@ const Formulario = ({busqueda, setBusqueda, setConsultar}) => {
           <option value="CR">Costa Rica</option>
           <option value="ES">España</option>
           <option value="PE">Perú</option>
-        </select>
-        <label htmlFor="pais">País: </label>
+        </select> <label htmlFor="pais">País: </label>
       </div>
 
       <div className="input-field col s12">
@@ -66,6 +68,12 @@ const Formulario = ({busqueda, setBusqueda, setConsultar}) => {
       </div>
     </form>
   );
-}
+};
 
-export default Formulario
+Formulario.prototype = {
+  busqueda: PropTypes.object.isRequired,
+  setBusqueda: PropTypes.func.isRequired,
+  setConsultar: PropTypes.func.isRequired,
+
+};
+export default Formulario;
